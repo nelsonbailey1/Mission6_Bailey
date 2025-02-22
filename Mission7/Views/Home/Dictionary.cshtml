@@ -1,0 +1,62 @@
+@model List<Movie>
+
+@{
+    ViewBag.Title = "Movies Dictionary";
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Movies Dictionary</title>
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Movies Dictionary</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-dark text-center">
+            <tr>
+                <th>Category</th>
+                <th>Title</th>
+                <th>Year</th>
+                <th>Director</th>
+                <th>Rating</th>
+                <th>Edited</th>
+                <th>Lent To</th>
+                <th>Copied To Plex</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>@(m.Category?.CategoryName ?? "No Category")</td>
+                    <td>@m.Title</td>
+                    <td>@m.Year</td>
+                    <td>@m.Director</td>
+                    <td>@m.Rating</td>
+                    <td>@(m.Edited ? "Yes" : "No")</td>
+                    <td>@(string.IsNullOrEmpty(m.LentTo) ? "N/A" : m.LentTo)</td>
+                    <td>@(m.CopiedToPlex ? "Yes" : "No")</td>
+                    <td>@(string.IsNullOrEmpty(m.Notes) ? "No Notes" : m.Notes)</td>
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-primary me-2" asp-controller="Home" asp-action="Edit" asp-route-id="@m.MovieId">
+                            ✏️ Edit
+                        </a>
+                        <a class="btn btn-sm btn-danger" asp-controller="Home" asp-action="Delete" asp-route-id="@m.MovieId" onclick="return confirm('Are you sure you want to delete this movie?');">
+                            🗑️ Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
